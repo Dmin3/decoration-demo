@@ -1,0 +1,4 @@
+name: decoration
+version: '${version}'
+main: decoration.decoration.Decoration
+api-version: 1.19

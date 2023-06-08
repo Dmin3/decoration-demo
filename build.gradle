@@ -19,6 +19,15 @@ repositories {
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.0' // JUnit 5 의존성 추가
+    // https://mvnrepository.com/artifact/net.milkbowl.vault/Vault
+    compileOnly 'net.milkbowl.vault:Vault:1.7.3'
+
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.0' // JUnit 5 엔진 의존성 추가
+}
+
+test {
+    useJUnitPlatform() // JUnit 5 사용 설정
 }
 
 def targetJavaVersion = 17

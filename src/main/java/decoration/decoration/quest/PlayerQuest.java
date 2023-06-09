@@ -1,20 +1,31 @@
 package decoration.decoration.quest;
 
+
 import java.util.Objects;
 
 public class PlayerQuest {
-    private String playerName;
+    private int dieCount;
+    private int breakBlockCount;
 
-    public PlayerQuest(String playerName) {
-        this.playerName = playerName;
+    public int getDieCount() {
+        return dieCount;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setDieCount(int dieCount) {
+        this.dieCount = dieCount;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public int getBreakBlockCount() {
+        return breakBlockCount;
+    }
+
+    public void setBreakBlockCount(int breakBlockCount) {
+        this.breakBlockCount = breakBlockCount;
+    }
+
+    public PlayerQuest(int dieCount, int breakBlockCount) {
+        this.dieCount = dieCount;
+        this.breakBlockCount = breakBlockCount;
     }
 
     @Override
@@ -22,11 +33,11 @@ public class PlayerQuest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlayerQuest that = (PlayerQuest) o;
-        return Objects.equals(playerName, that.playerName);
+        return dieCount == that.dieCount && breakBlockCount == that.breakBlockCount;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playerName);
+        return Objects.hash(dieCount, breakBlockCount);
     }
 }

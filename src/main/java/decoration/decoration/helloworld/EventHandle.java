@@ -1,73 +1,59 @@
 package decoration.decoration.helloworld;
 
 
-import decoration.decoration.Decoration;
+import decoration.decoration.file.FileApi;
 import decoration.decoration.quest.PlayerQuest;
+import decoration.decoration.quest.PlayerQuestUtil;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.configuration.file.YamlConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.Map;
 
 
 public class EventHandle implements Listener {
-    private Decoration main;
-    public EventHandle(Decoration main) {
-        this.main = main;
-    }
+    FileApi fileApi = FileApi.getFileApi();
 
     @EventHandler
     public void joinPlayer(PlayerJoinEvent e) {
-        File file = new File(main.getDataFolder(), "playerData.yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        String playerId = e.getPlayer().getUniqueId().toString();
 
-        ConfigurationSection section = config.getConfigurationSection("sdasdada");
+        Map<String, PlayerQuest> playerQuestMap = PlayerQuestUtil.getPlayerQuestMap();
 
-        e.getPlayer().sendMessage(section.getName());
+        if (!playerQuestMap.containsKey(playerId)) {
+            ConfigurationSection section = fileApi.getConfig().getConfigurationSection(playerId);
 
+            if (section == null) {
+                PlayerQuest playerQuest = new PlayerQuest(0, 0);
+                PlayerQuestUtil.setPlayerQuestMap(playerId, playerQuest);
+            } else {
+                int dieCount = section.getInt("dieCount");
+                int breakBlockCount = section.getInt("breakBlockCount");
 
-        try {
-                config.save(file);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                PlayerQuest playerQuest = new PlayerQuest(dieCount, breakBlockCount);
+                PlayerQuestUtil.setPlayerQuestMap(playerId, playerQuest);
+            }
         }
+
+        sendTitle(e.getPlayer());
     }
 
-    @EventHandler
-    public void sendTitle(PlayerJoinEvent event) {
+    private void sendTitle(Player event) {
         Player player = event.getPlayer();
-        player.sendTitle("Welcome 봉하시티", "By JINKI3", 10,100,20);
+        player.sendTitle("Welcome 봉하시티", "By JINKI3", 10, 100, 20);
     }
 
     @EventHandler
-    public void touchBlock(BlockBreakEvent e)   {
-        File file = new File(main.getDataFolder(), "test2.yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        Player player = e.getPlayer();
+    public void touchBlock(BlockBreakEvent e) {
+        String playerId = e.getPlayer().getUniqueId().toString();
 
-        config.set(player.getUniqueId().toString(), player.getDisplayName());
+        Map<String, PlayerQuest> playerQuestMap = PlayerQuestUtil.getPlayerQuestMap();
+        PlayerQuest playerQuest = playerQuestMap.get(playerId);
+        playerQuest.addBlockBreakCount(1);
 
-        try {
-            config.save(file);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-        player.sendMessage("블록 파괴 하고 config파일에 저장");
-
-        player.sendMessage(config.getString(player.getUniqueId().toString()) + "키가 정말 잘 가져와지는군!");
-
-    }
-
-    public void test(){
-        Yaml yaml = new Yaml();
-        yaml.load("test.yml");
+        e.getPlayer().sendMessage(e.getPlayer().getDisplayName() + "가" + playerQuest.getBreakBlockCount() + " 번 째 블럭 부시는중입니다");
     }
 }

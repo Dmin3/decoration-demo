@@ -40,4 +40,8 @@ public class PlayerQuest {
     public int hashCode() {
         return Objects.hash(dieCount, breakBlockCount);
     }
+
+    public void addBlockBreakCount(int value) {
+        this.breakBlockCount += value;
+    }
 }

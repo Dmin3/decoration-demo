@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerQuestUtil {
-    private static Map<String, PlayerQuest> playerQuestMap = new HashMap<>();
+    private static Map<String, PlayerQuest> playerQuestMap;
 
     public static Map<String, PlayerQuest> getPlayerQuestMap() {
         return playerQuestMap;
@@ -12,5 +12,9 @@ public class PlayerQuestUtil {
 
     public static void setPlayerQuestMap(String playerId, PlayerQuest playerQuest) {
         playerQuestMap.put(playerId, playerQuest);
+    }
+
+    public static void setUp(){
+        playerQuestMap = new HashMap<>();
     }
 }

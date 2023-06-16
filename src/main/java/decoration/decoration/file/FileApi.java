@@ -10,27 +10,16 @@ import java.io.IOException;
 import java.util.Map;
 
 public class FileApi {
-    private static FileApi fileApi;
-    private Decoration main;
-    private static File file;
-    private static YamlConfiguration config;
+    private File file;
+    private YamlConfiguration config;
 
     public YamlConfiguration getConfig() {
-        return getFileApi().getConfig();
+        return config;
     }
 
-    public static FileApi getFileApi() {
-        return fileApi;
-    }
-
-    public static void setUp(Decoration main){
-        fileApi = new FileApi(main);
-        file = new File(fileApi.main.getDataFolder(), "playerData.yml");
+    public FileApi(Decoration main) {
+        file = new File(main.getDataFolder(), "playerData.yml");
         config = YamlConfiguration.loadConfiguration(file);
-    }
-
-    private FileApi(Decoration main) {
-        this.main = main;
     }
 
     public void saveConfig() {
@@ -39,11 +28,13 @@ public class FileApi {
         for (String playerId : playerQuestMap.keySet()) {
             String dieCount = playerId + ".dieCount";
             String breakBlockCount = playerId + ".breakBlockCount";
+            String woodCount = playerId + ".woodCount";
 
             PlayerQuest playerQuest = playerQuestMap.get(playerId);
 
             config.set(dieCount, playerQuest.getDieCount());
             config.set(breakBlockCount, playerQuest.getBreakBlockCount());
+            config.set(woodCount, playerQuest.getWoodCount());
 
             try {
                 config.save(file);

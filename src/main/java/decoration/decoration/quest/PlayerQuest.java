@@ -6,6 +6,29 @@ import java.util.Objects;
 public class PlayerQuest {
     private int dieCount;
     private int breakBlockCount;
+    private int woodCount;
+
+    public PlayerQuest(int dieCount, int breakBlockCount, int woodCount) {
+        this.dieCount = dieCount;
+        this.breakBlockCount = breakBlockCount;
+        this.woodCount = woodCount;
+    }
+
+    public void addBlockBreakCount() {
+        this.breakBlockCount += 1;
+    }
+
+    public void addWoodBlockCount() {
+        this.woodCount += 1;
+    }
+
+    public int getWoodCount() {
+        return woodCount;
+    }
+
+    public void setWoodCount(int woodCount) {
+        this.woodCount = woodCount;
+    }
 
     public int getDieCount() {
         return dieCount;
@@ -23,11 +46,6 @@ public class PlayerQuest {
         this.breakBlockCount = breakBlockCount;
     }
 
-    public PlayerQuest(int dieCount, int breakBlockCount) {
-        this.dieCount = dieCount;
-        this.breakBlockCount = breakBlockCount;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -39,9 +57,5 @@ public class PlayerQuest {
     @Override
     public int hashCode() {
         return Objects.hash(dieCount, breakBlockCount);
-    }
-
-    public void addBlockBreakCount(int value) {
-        this.breakBlockCount += value;
     }
 }

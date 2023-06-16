@@ -7,15 +7,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 public final class Decoration extends JavaPlugin {
+    private FileApi fileApi;
+
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(new EventHandle(), this);
-        FileApi.setUp(this);
+        fileApi = new FileApi(this);
         PlayerQuestUtil.setUp();
+        getServer().getPluginManager().registerEvents(new EventHandle(this.fileApi), this);
     }
 
     @Override
     public void onDisable() {
-        FileApi.getFileApi().saveConfig();
+        fileApi.saveConfig();
     }
 }

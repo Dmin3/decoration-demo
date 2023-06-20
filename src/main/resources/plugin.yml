@@ -2,3 +2,11 @@ name: decoration
 version: '${version}'
 main: decoration.decoration.Decoration
 api-version: 1.19
+
+commands:
+  decoration:
+    description: 칭호 관련 명령어 살펴보기
+    aliases:
+      - 칭호보기
+      - 칭호변경
+

@@ -4,7 +4,9 @@ package decoration.decoration.helloworld;
 import decoration.decoration.file.FileApi;
 import decoration.decoration.quest.PlayerQuest;
 import decoration.decoration.quest.PlayerQuestUtil;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -12,40 +14,24 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Map;
-import java.util.Set;
 
 
 public class EventHandle implements Listener {
-    private FileApi fileApi;
     private Map<String, PlayerQuest> playerQuestMap = PlayerQuestUtil.getPlayerQuestMap();
-
-    public EventHandle(FileApi fileApi) {
-        this.fileApi = fileApi;
-    }
 
     @EventHandler
     public void joinPlayer(PlayerJoinEvent e) {
         String playerId = e.getPlayer().getUniqueId().toString();
 
+        // config파일에도 없는 신규 유저임
         if (!playerQuestMap.containsKey(playerId)) {
-            ConfigurationSection section = fileApi.getConfig().getConfigurationSection(playerId);
+            PlayerQuest playerQuest = new PlayerQuest();
+            playerQuestMap.put(playerId, playerQuest);
 
-            if (section == null) {
-                PlayerQuest playerQuest = new PlayerQuest(0, 0, 0);
-                PlayerQuestUtil.setPlayerQuestMap(playerId, playerQuest);
-            } else {
-                int dieCount = section.getInt("dieCount");
-                int breakBlockCount = section.getInt("breakBlockCount");
-                int woodCount = section.getInt("woodCount");
-
-                PlayerQuest playerQuest = new PlayerQuest(dieCount, breakBlockCount, woodCount);
-                PlayerQuestUtil.setPlayerQuestMap(playerId, playerQuest);
-            }
         }
 
         sendTitle(e.getPlayer());
@@ -57,23 +43,12 @@ public class EventHandle implements Listener {
     }
 
     @EventHandler
-    public void touchBlock(BlockBreakEvent e) {
-        String playerId = e.getPlayer().getUniqueId().toString();
-
-        PlayerQuest playerQuest = playerQuestMap.get(playerId);
-        playerQuest.addBlockBreakCount();
-
-        e.getPlayer().sendMessage(e.getPlayer().getDisplayName() + "가" + playerQuest.getBreakBlockCount() + " 번 째 블럭 부시는중입니다");
-    }
-
-    @EventHandler
     public void woodBlockBreak(BlockBreakEvent e) {
         if (isWoodBlock(e.getBlock())) {
             PlayerQuest playerQuest = playerQuestMap.get(e.getPlayer().getUniqueId().toString());
-            playerQuest.addWoodBlockCount();
+            playerQuest.addWoodCount();
 
             e.getPlayer().sendMessage("나무를 " + playerQuest.getWoodCount() + "개째 캐는 중");
-
 
             if (playerQuest.getWoodCount() == 10) {
                 addWoodTeam(e.getPlayer());
@@ -87,8 +62,7 @@ public class EventHandle implements Listener {
                 || type == Material.JUNGLE_LOG || type == Material.ACACIA_LOG || type == Material.DARK_OAK_LOG;
     }
 
-
-    public void addWoodTeam(Player player) {
+    private void addWoodTeam(Player player) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
         Team team;
@@ -98,11 +72,9 @@ public class EventHandle implements Listener {
             team = scoreboard.getTeam("wood");
         }
 
-        team.setPrefix(ChatColor.GRAY + "[나무꾼]");
+        team.setPrefix(ChatColor.RED + "[나무꾼]");
         team.addEntry(player.getDisplayName());
 
         player.sendMessage("[나무꾼] 칭호 획득!!");
     }
-
-
 }

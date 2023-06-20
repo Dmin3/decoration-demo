@@ -1,8 +1,9 @@
 package decoration.decoration;
 
+import decoration.decoration.commands.CustomCommands;
 import decoration.decoration.file.FileApi;
 import decoration.decoration.helloworld.EventHandle;
-import decoration.decoration.quest.PlayerQuestUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -11,9 +12,10 @@ public final class Decoration extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        fileApi = new FileApi(this);
-        PlayerQuestUtil.setUp();
-        getServer().getPluginManager().registerEvents(new EventHandle(this.fileApi), this);
+        fileApi = new FileApi(this, Bukkit.getOfflinePlayers());
+
+        getServer().getPluginManager().registerEvents(new EventHandle(), this);
+        getCommand("decoration").setExecutor(new CustomCommands());
     }
 
     @Override

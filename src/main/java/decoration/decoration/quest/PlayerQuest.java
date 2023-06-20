@@ -4,46 +4,72 @@ package decoration.decoration.quest;
 import java.util.Objects;
 
 public class PlayerQuest {
-    private int dieCount;
-    private int breakBlockCount;
+    private int diamondCount;
     private int woodCount;
+    private int killCount;
+    private int zombieCount;
+    private int creeperCount;
+    private int skeletonCount;
+    private int ironCount;
+    private int dieCount;
 
-    public PlayerQuest(int dieCount, int breakBlockCount, int woodCount) {
-        this.dieCount = dieCount;
-        this.breakBlockCount = breakBlockCount;
-        this.woodCount = woodCount;
-    }
-
-    public void addBlockBreakCount() {
-        this.breakBlockCount += 1;
-    }
-
-    public void addWoodBlockCount() {
+    public void addWoodCount(){
         this.woodCount += 1;
+    }
+
+
+    public PlayerQuest() {
+    }
+
+    public PlayerQuest(
+            int diamondCount,
+            int woodCount,
+            int killCount,
+            int zombieCount,
+            int creeperCount,
+            int skeletonCount,
+            int ironCount,
+            int dieCount) {
+        this.diamondCount = diamondCount;
+        this.woodCount = woodCount;
+        this.killCount = killCount;
+        this.zombieCount = zombieCount;
+        this.creeperCount = creeperCount;
+        this.skeletonCount = skeletonCount;
+        this.ironCount = ironCount;
+        this.dieCount = dieCount;
+    }
+
+    public int getDiamondCount() {
+        return diamondCount;
     }
 
     public int getWoodCount() {
         return woodCount;
     }
 
-    public void setWoodCount(int woodCount) {
-        this.woodCount = woodCount;
+    public int getKillCount() {
+        return killCount;
+    }
+
+    public int getZombieCount() {
+        return zombieCount;
+    }
+
+    public int getCreeperCount() {
+        return creeperCount;
+    }
+
+    public int getSkeletonCount() {
+        return skeletonCount;
+    }
+
+    public int getIronCount() {
+        return ironCount;
     }
 
     public int getDieCount() {
         return dieCount;
-    }
-
-    public void setDieCount(int dieCount) {
-        this.dieCount = dieCount;
-    }
-
-    public int getBreakBlockCount() {
-        return breakBlockCount;
-    }
-
-    public void setBreakBlockCount(int breakBlockCount) {
-        this.breakBlockCount = breakBlockCount;
     }
 
     @Override
@@ -51,11 +77,11 @@ public class PlayerQuest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlayerQuest that = (PlayerQuest) o;
-        return dieCount == that.dieCount && breakBlockCount == that.breakBlockCount;
+        return diamondCount == that.diamondCount && woodCount == that.woodCount && killCount == that.killCount && zombieCount == that.zombieCount && creeperCount == that.creeperCount && skeletonCount == that.skeletonCount && ironCount == that.ironCount && dieCount == that.dieCount;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dieCount, breakBlockCount);
+        return Objects.hash(diamondCount, woodCount, killCount, zombieCount, creeperCount, skeletonCount, ironCount, dieCount);
     }
 }

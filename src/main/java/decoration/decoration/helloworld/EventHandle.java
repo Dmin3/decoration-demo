@@ -4,6 +4,7 @@ package decoration.decoration.helloworld;
 import decoration.decoration.file.FileApi;
 import decoration.decoration.quest.PlayerQuest;
 import decoration.decoration.quest.PlayerQuestUtil;
+import decoration.decoration.quest.Quest;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -65,16 +66,10 @@ public class EventHandle implements Listener {
     private void addWoodTeam(Player player) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
-        Team team;
-        if (scoreboard.getTeam("wood") == null) {
-            team = scoreboard.registerNewTeam("wood");
-        } else {
-            team = scoreboard.getTeam("wood");
-        }
+        Team team = scoreboard.getTeam(Quest.WOOD_MAN.getTeamName());
 
-        team.setPrefix(ChatColor.RED + "[나무꾼]");
         team.addEntry(player.getDisplayName());
 
-        player.sendMessage("[나무꾼] 칭호 획득!!");
+        player.sendMessage(team.getPrefix() + " 칭호 획득하셨습니다!!");
     }
 }

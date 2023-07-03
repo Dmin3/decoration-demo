@@ -17,6 +17,10 @@ public class PlayerQuest {
         this.woodCount += 1;
     }
 
+    public void addDiamondCount(){
+        this.diamondCount += 1;
+    }
+
 
     public PlayerQuest() {
     }
@@ -83,5 +87,25 @@ public class PlayerQuest {
     @Override
     public int hashCode() {
         return Objects.hash(diamondCount, woodCount, killCount, zombieCount, creeperCount, skeletonCount, ironCount, dieCount);
+    }
+
+    public void addIronCount() {
+        this.ironCount += 1;
+    }
+
+    public void addZombieCount() {
+        this.zombieCount += 1;
+    }
+
+    public void addKillCount() {
+        this.killCount += 1;
+    }
+
+    public void addDieCount() {
+        this.dieCount += 1;
+    }
+
+    public void addSkeletonCount() {
+        this.skeletonCount += 1;
     }
 }

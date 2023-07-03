@@ -20,7 +20,7 @@ public enum Quest {
     WOOD_MAN("나무꾼", ".woodCount", 100, ChatColor.DARK_GRAY),
     ZOMBIE_HUNTER("좀비사냥꾼", ".killCount.zombie", 30, ChatColor.GREEN),
     DIABLO("디아블로", ".killCount.player", 5, ChatColor.RED),
-    STUPID("좆병신", ".killCount.die", 3, ChatColor.GRAY),
+    STUPID("바보", ".killCount.die", 3, ChatColor.GRAY),
     GOT_ARROW("신궁", ".killCount.skeleton", 30, ChatColor.DARK_BLUE),
     BDT("폭탄처리반", ".killCount.creeper", 30, ChatColor.DARK_PURPLE),
     ;

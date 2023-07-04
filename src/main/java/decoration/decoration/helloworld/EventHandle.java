@@ -199,14 +199,13 @@ public class EventHandle implements Listener {
         Entity entity = e.getEntity();
 
         // 데미지를 준 엔티티
-        Entity entity1 = e.getDamager();
+        Entity damager = e.getDamager();
 
-        if (entity instanceof Skeleton && entity1 instanceof Arrow){
+        if (entity instanceof Skeleton && damager instanceof Arrow) {
             Skeleton skeleton = (Skeleton) entity;
-            Arrow arrow = (Arrow) entity1;
+            Arrow arrow = (Arrow) damager;
 
-            // 스켈레톤 잡았다는 검증이 필요함 !!!
-            if (arrow.getShooter() instanceof Player){
+            if (skeleton.getHealth() <= e.getFinalDamage() && arrow.getShooter() instanceof Player) {
                 Player arrowShooter = (Player) arrow.getShooter();
 
                 PlayerQuest playerQuest = playerQuestMap.get(arrowShooter.getUniqueId().toString());
@@ -214,15 +213,12 @@ public class EventHandle implements Listener {
 
                 arrowShooter.sendMessage("스켈레톤을 " + playerQuest.getSkeletonCount() + "마리 잡았습니다!");
 
-                if (playerQuest.getSkeletonCount() == Quest.GOT_ARROW.getRequirement()){
+                if (playerQuest.getSkeletonCount() == Quest.GOT_ARROW.getRequirement()) {
                     addGotArrowTeam(arrowShooter);
                 }
             }
 
         }
-
-
-
     }
 
     private void addGotArrowTeam(Player player) {
@@ -230,7 +226,32 @@ public class EventHandle implements Listener {
         team.addEntry(player.getDisplayName());
 
         player.sendMessage(team.getPrefix() + " 칭호를 획득하셨습니다!!");
+    }
 
+    // 폭탄처리반
+    @EventHandler
+    public void killCreeper(EntityDeathEvent e) {
+        EntityType type = e.getEntity().getType();
+        Player killer = e.getEntity().getKiller();
+
+        if (type == EntityType.CREEPER && killer != null) {
+            PlayerQuest playerQuest = playerQuestMap.get(killer.getUniqueId().toString());
+            playerQuest.addCreeperCount();
+
+            killer.sendMessage("크리퍼 " + playerQuest.getCreeperCount() + "마리를 잡으셨습니다!");
+
+            if (playerQuest.getCreeperCount() == Quest.BDT.getRequirement()) {
+                addBDTTeam(killer);
+            }
+
+        }
+    }
+
+    private void addBDTTeam(Player player) {
+        Team team = scoreboard.getTeam(Quest.BDT.getTeamName());
+        team.addEntry(player.getDisplayName());
+
+        player.sendMessage(team.getPrefix() + " 칭호를 획득하셨습니다!");
     }
 
 }

@@ -108,4 +108,8 @@ public class PlayerQuest {
     public void addSkeletonCount() {
         this.skeletonCount += 1;
     }
+
+    public void addCreeperCount() {
+        this.creeperCount += 1;
+    }
 }
